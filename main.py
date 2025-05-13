@@ -7,10 +7,13 @@ print("Running main program.")
 import time
 from machine import Pin
 
-led = Pin(2, Pin.OUT)
+led1 = Pin(2, Pin.OUT)   # Built-in LED on most ESP32 boards
+led2 = Pin(4, Pin.OUT)   # External LED
 
 while True:
-    led.on()
+    led1.on()
+    led2.on()
     time.sleep(0.5)
-    led.off()
+    led1.off()
+    led2.off()
     time.sleep(0.5)
