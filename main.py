@@ -7,10 +7,25 @@ print("Running main program.")
 import time
 from machine import Pin
 
-led1 = Pin(2, Pin.OUT)   # Built-in LED on most ESP32 boards
+import time
+from machine import Pin
+
+# Define LED pins
+led2 = Pin(2, Pin.OUT)
+led4 = Pin(4, Pin.OUT)
+led17 = Pin(17, Pin.OUT)
+
+# LED pattern sequence (each tuple is a step: (GPIO2, GPIO4, GPIO17))
+pattern = [
+    (1, 0, 0),
+    (1, 1, 0),
+    (1, 1, 1),
+    (0, 0, 0),
+]
 
 while True:
-    led1.on()
-    time.sleep(0.5)
-    led1.off()
-    time.sleep(0.5)
+    for state in pattern:
+        led2.value(state[0])
+        led4.value(state[1])
+        led17.value(state[2])
+        time.sleep(0.5)
