@@ -1,1 +1,1 @@
-main.py,ota_updater.py,version.txt,config.py
+main.py,ota_updater.py,version.txt
