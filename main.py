@@ -4,18 +4,27 @@ if ota_updater.check_for_update("https://raw.githubusercontent.com/ShariarIman/E
     print("[OTA] Running updated code.")
 
 print("Running main program.")
-import time
-from machine import Pin
+import ota_updater
+
+# OTA check
+if ota_updater.check_for_update("https://raw.githubusercontent.com/ShariarIman/ESP32OTA/main", verbose=True):
+    print("[OTA] Running updated code.")
+
+# --- Main Program Starts Here ---
+print("Running main program.")
 
 import time
 from machine import Pin
 
-# Define LED pins
-led1 = Pin(17, Pin.OUT)
-led2 = Pin(4, Pin.OUT)
-led3 = Pin(2, Pin.OUT)
+# LED pins
+led2 = Pin(2, Pin.OUT)
+led4 = Pin(4, Pin.OUT)
+led17 = Pin(17, Pin.OUT)
 
-# LED pattern sequence (each tuple is a step: (GPIO2, GPIO4, GPIO17))
+# Sensor pin (Laser sensor digital output)
+sensor = Pin(18, Pin.IN)
+
+# LED pattern sequence
 pattern = [
     (1, 0, 0),
     (1, 1, 0),
@@ -24,8 +33,16 @@ pattern = [
 ]
 
 while True:
-    for state in pattern:
-        led1.value(state[0])
-        led2.value(state[1])
-        led3.value(state[2])
-        time.sleep(0.5)
+    if sensor.value() == 1:
+        print("🚨 Object detected!")
+        for step in pattern:
+            led2.value(step[0])
+            led4.value(step[1])
+            led17.value(step[2])
+            time.sleep(0.5)
+    else:
+        # Clear LEDs when nothing is detected
+        led2.off()
+        led4.off()
+        led17.off()
+        time.sleep(0.1)
